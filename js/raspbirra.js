@@ -1,3 +1,26 @@
+/*
+MIT License
+
+Copyright (c) 2020 Niug - Espurna de Vilopriu
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 
 // Colors elements raspbirra
 rb_hmi_white = "#fff";
@@ -9,11 +32,11 @@ rb_hmi_liquid = "#39b1ef";
 rb_hmi_wort = "#edaa44";
 
 /**
- * Library for help to develop a front-end for the visual interface of the raspbirra system using canvas library RaphaelJS
- * @param {string} html Id from the element that will have the workspace
- * @param {float} Workspace canvas width 
- * @param {float} Workspace canvas height
- * @returns {raspbirra} Frontend object for draw and handle the raspbirra human machine interface (HMI)
+ * Frontend library for developing the visual interface of the raspbirra system, using canvas library RaphaelJS.
+ * @param {string} div_id Html id from the element that will have the canvas
+ * @param {number} width Canvas width 
+ * @param {number} height Canvas height
+ * @returns {raspbirra} Frontend object for drawing and handle the raspbirra human machine interface (HMI)
  */
 function raspbirra(div_id, width, height)
 {
@@ -39,10 +62,10 @@ function raspbirra(div_id, width, height)
 	// TODO::Crear rb_element de valvula manual
 
 	/**
-	 * raspbirra method for draw a coil into a kettle and returns a raspbirra element Object for interactuate from front-end
-	 * @param {rb_element} Kettle object that have the coil inside
-	 * @param {string} Coil ID
-	 * @returns {rb_element} raspbirra element Object
+	 * Raspbirra method for drawing a coil inside a kettle and returns a raspbirra element object
+	 * @param {rb_element} rb_kettle Kettle object that contains the coil inside
+	 * @param {string} id Coil ID
+	 * @returns {rb_element} Raspbirra element object
 	 */
 	this.coil = function(rb_kettle, id)
 	{
@@ -63,8 +86,8 @@ function raspbirra(div_id, width, height)
 	}
 	
 	/**
-	 * raspbirra method for draw a fermenter in workspace and returns a raspbirra element Object for interactuate from front-end
-	 * @returns {rb_element} raspbirra element Object
+	 * Raspbirra method for drawing a fermenter on canvas and returns a raspbirra element object
+	 * @returns {rb_element} Raspbirra element Object
 	 */
 	this.fermenter = function() //TODO: Draw in a specific x,y, width and height
 	{
@@ -103,9 +126,9 @@ function raspbirra(div_id, width, height)
 	}
 	
 	/**
-	 * raspbirra method for draw a heating element into a kettle and returns a raspbirra element Object for interactuate from front-end
-	 * @param {rb_element} rb_element object (kettle) that have the coil inside
-	 * @returns {rb_element} raspbirra element Object
+	 * Raspbirra method for drawing a heating element inside a kettle and returns a raspbirra element object
+	 * @param {rb_element} rb_kettle rb_element object (kettle) that contains the coil inside
+	 * @returns {rb_element} Raspbirra element object
 	 */
 	this.heating = function(rb_kettle)
 	{
@@ -124,10 +147,10 @@ function raspbirra(div_id, width, height)
 	}
 
 	 /**
-	 * raspbirra method for draw a kettle and returns a raspbirra element Object for interactuate from front-end
-	 * @param {string} Coil ID
-	 * @param {string} Coil name
-	 * @returns {rb_element} raspbirra element Object
+	 * Raspbirra method for drawing a kettle and returns a raspbirra element object
+	 * @param {string} id Coil ID
+	 * @param {string} name Coil name
+	 * @returns {rb_element} Raspbirra element object
 	 */
 	this.kettle = function(id, name)
 	{	
@@ -184,12 +207,12 @@ function raspbirra(div_id, width, height)
 	}
 	
 	/**
-	 * raspbirra method for draw a pump and returns a raspbirra element Object for interactuate from front-end
-	 * @param {number} x position of the rb_element
-	 * @param {number} y position of the rb_element
-	 * @param {string} Pump ID
-	 * @param {function} Callback function that will be called when user click over pump
-	 * @returns {rb_element} raspbirra element Object
+	 * Raspbirra method for drawing a pump and returns a raspbirra element object
+	 * @param {number} x Position of the rb_element
+	 * @param {number} y Position of the rb_element
+	 * @param {string} id Pump ID
+	 * @param {function} _click_function Callback function that will be called when user click over pump
+	 * @returns {rb_element} Raspbirra element object
 	 */
 	this.pump = function(x, y, id, _click_function)
 	{
@@ -214,8 +237,8 @@ function raspbirra(div_id, width, height)
 		var rb_elem = new rb_element("rb_pump_"+id, id, 0, new rb_coords(x,y), rb_coords_in, rb_coords_out, 0, canviar_color, canviar_text);
 		
 		bomba.click(function(event) {
-			console.log("Bomba::" + rb_elem.stat);
-			rb_elem.set_stat(Math.abs(rb_elem.stat-1));
+			console.log("Bomba::" + rb_elem.state);
+			rb_elem.set_state(Math.abs(rb_elem.state-1));
 			if (_click_function != undefined)
 				_click_function();
 		});
@@ -224,13 +247,13 @@ function raspbirra(div_id, width, height)
 	}
 	
 	/**
-	 * raspbirra method for draw a thermometer inside a kettle and returns a raspbirra element Object for interactuate from front-end. 
-	 * Have the option for draw a controller for indicate the objective temperature.
-	 * @param {rb_element} rb_element object (kettle) that have the thermometer inside
-	 * @param {string} Thermometer ID
-	 * @param {bool} If True, will draw the objective temperature controller
-	 * @param {function} Callback function that will be called when user click over controller
-	 * @returns {rb_element} raspbirra element Object
+	 * Raspbirra method for drawing a thermometer inside a kettle and returns a raspbirra element object.
+	 * There is the option for drawing a controller to indicate the objective temperature.
+	 * @param {rb_element} rb_kettle rb_element object (kettle) that contains the thermometer inside
+	 * @param {string} _id Thermometer ID
+	 * @param {bool} has_controller If True, will draw the objective temperature controller
+	 * @param {function} _click_function Callback function that will be called when user click over controller
+	 * @returns {rb_element} Raspbirra element object
 	 */
 	this.thermometer = function(rb_kettle, _id, has_controller, _click_function)
 	{
@@ -268,15 +291,15 @@ function raspbirra(div_id, width, height)
 	}
 	
 	/**
-	 * raspbirra method for draw a Tee. Permit connect 3 elements in same tee thread ALWAYS opened.
-	 * @param {string} T ID
-	 * @param {rb_element} First rb_element Object that will connect with T element
-	 * @param {rb_element} Second rb_element Object that will connect with T element
-	 * @param {rb_element} Third rb_element Object that will connect with T element
-	 * @param {array} array of three numbers (1/0) that indicate if T will connect with the in or out of the specific rb_element
-	 * @param {string} Middle points string (RaphaelJS format) for the middle points connections of the T. Permit draw lines with corners
-	 * @param {int} up/down (1/0) for draw the three thread over/down the other elements
-	 * @returns {rb_thread} raspbirra thread Object
+	 * Raspbirra method for drawing a Tee thread that connects 3 elements in the same Tee thread, ALWAYS opened
+	 * @param {string} id Tee thread ID
+	 * @param {rb_element} rb_elem_1 First rb_element object that will connect with Tee thread element
+	 * @param {rb_element} rb_elem_2 Second rb_element object that will connect with Tee thread element
+	 * @param {rb_element} rb_elem_3 Third rb_element object that will connect with Tee thread element
+	 * @param {array} arr_connections Array of three numbers (1/0) that indicates if Tee thread will connect with the in (0) or out (1) of the specific rb_element
+	 * @param {string} middle_points Middle points string (RaphaelJS format) for the middle points connections of the Tee thread. Permit drawing lines with corners
+	 * @param {number} front Up/down (1/0) for drawing threads over/down the other elements
+	 * @returns {rb_thread} raspbirra thread object
 	 */
 	this.tee = function(id, rb_elem_1, rb_elem_2, rb_elem_3, arr_connections, middle_points, front) 
 	{
@@ -308,13 +331,13 @@ function raspbirra(div_id, width, height)
 	}
 	
 	/**
-	 * raspbirra method for draw a thread. Permit connect 2 elements in same thread ALWAYS opened.
-	 * @param {string} thread ID
-	 * @param {rb_element} First rb_element Object that will connect his out with thread
-	 * @param {rb_element} Second rb_element Object that will connect his in with thread
-	 * @param {string} Middle points string (RaphaelJS format) for the middle points connections of the T. Permit draw lines with corners
-	 * @param {int} up/down (1/0) for draw the three thread over/down the other elements
-	 * @returns {rb_thread} raspbirra thread Object
+	 * Raspbirra method for drawing a thread. Connect 2 elements in same thread ALWAYS opened.
+	 * @param {string} id Thread ID
+	 * @param {rb_element} rb_elem_1 First rb_element object that will connect his 'out' with thread
+	 * @param {rb_element} rb_elem_2 Second rb_element Object that will connect his 'in' with thread
+	 * @param {string} middle_points Middle points string (RaphaelJS format) for the middle points connections of the thread. Permit drawing lines with corners
+	 * @param {number} front Up/down (1/0) for drawing threads over/down the other elements
+	 * @returns {rb_thread} raspbirra thread object
 	 */
 	this.thread = function(id, rb_elem_1, rb_elem_2, middle_points, front)
 	{
@@ -335,16 +358,16 @@ function raspbirra(div_id, width, height)
 	}
 	
 	/**
-	 * raspbirra method for draw a horizontal valve and returns a raspbirra element Object for interactuate from front-end. 
-	 * This element permit open/close the liquid connections.
-	 * This valve have the in on left side and out on right side of the element.
-	 * @param {number} x position of the rb_element
-	 * @param {number} y position of the rb_element
-	 * @param {string} Valve ID
-	 * @param {bool} If True, will turn the valve having in on right side and out on left side
-	 * @param {bool} If True, will permit liquid flow for two directions of the element
-	 * @param {function} Callback function that will be called when user click over valve
-	 * @returns {rb_element} raspbirra element Object
+	 * Raspbirra method for drawing a horizontal valve and returns a raspbirra element object
+	 * This element handles open/close the liquid connections.
+	 * This valve has the 'in' on left side and 'out' on right side of the element.
+	 * @param {number} x X position of the rb_element
+	 * @param {number} y Y position of the rb_element
+	 * @param {string} id Valve ID
+	 * @param {bool} inverse If True, will rotate the valve 180º with the 'in' on the right side and 'out' on the left side
+	 * @param {bool} bidirectional If True, permit liquid to flow in both directions of the element
+	 * @param {function} _click_function Callback function that will be called when user click over valve
+	 * @returns {rb_element} Raspbirra element object
 	 */
 	this.valve_h = function(x, y, id, inverse, bidirectional, _click_function)
 	{
@@ -375,8 +398,8 @@ function raspbirra(div_id, width, height)
 		var rb_elem = new rb_element("rb_valv_"+id, id, 0, new rb_coords(x,y), rb_coords_in, rb_coords_out, bidirectional, canviar_color, canviar_text);
 		
 		valve.click(function(event) {
-			console.log("Valvula_h::" + rb_elem.stat);
-			rb_elem.set_stat(Math.abs(rb_elem.stat-1));
+			console.log("Valvula_h::" + rb_elem.state);
+			rb_elem.set_state(Math.abs(rb_elem.state-1));
 			if (_click_function != undefined)
 				_click_function();
 		});
@@ -385,15 +408,15 @@ function raspbirra(div_id, width, height)
 	}
 
 	/**
-	 * raspbirra method for draw a vertical valve and returns a raspbirra element Object for interactuate from front-end. 
-	 * This element permit open/close the liquid connections.
-	 * This valve have the in on up side and out on down side of the element.
-	 * @param {number} x position of the rb_element
-	 * @param {number} y position of the rb_element
-	 * @param {string} Valve ID
-	 * @param {bool} If True, will permit liquid flow for two directions of the element
-	 * @param {function} Callback function that will be called when user click over valve
-	 * @returns {rb_element} raspbirra element Object
+	 * Raspbirra method for drawing a vertical valve and returns a raspbirra element object
+	 * This element handles open/close the liquid connections.
+	 * This valve has 'in' on the up side and 'out' on the down side of the element.
+	 * @param {number} x X position of the rb_element
+	 * @param {number} y Y position of the rb_element
+	 * @param {string} id Valve ID
+	 * @param {bool} bidirectional If True, permit liquid to flow in both directions of the element
+	 * @param {function} _click_function Callback function that will be called when user click over valve
+	 * @returns {rb_element} Raspbirra element object
 	 */
 	this.valve_v = function(x, y, id, bidirectional, _click_function)
 	{
@@ -423,10 +446,9 @@ function raspbirra(div_id, width, height)
 		var rb_elem = new rb_element("rb_valv_"+id, id, 0, new rb_coords(x,y), rb_coords_in, rb_coords_out, bidirectional, canviar_color, canviar_text);
 		
 		valve.click(function(event) {
-			// Canviar d'estat l'element i avisar la out (i si bi tb l'in) del canvi d'estat
-			console.log("Valvula_v" + rb_elem.id +"_" + rb_elem.name+"::" + rb_elem.stat);
+			console.log("Valvula_v" + rb_elem.id +"_" + rb_elem.name+"::" + rb_elem.state);
 			
-			rb_elem.set_stat(Math.abs(rb_elem.stat-1));
+			rb_elem.set_state(Math.abs(rb_elem.state-1));
 						
 			if (_click_function != undefined)
 				_click_function();
@@ -437,19 +459,21 @@ function raspbirra(div_id, width, height)
 	
 	/* Mètodes privats */
 	/**
-	 * Generic raspbirra element Object (rb_element) for interactuate with kettles, coils, valves,...
-	 * @param {string} Id del element
-	 * @param {string} Nom del element
-	 * @param {rb_coords} Coordenades a on s'ha de dibuixar l'element
-	 * @param {rb_coords} Indica el la posició x,y del vèrtex d'in
-	 * @param {rb_coords} Indica el la posició x,y del vèrtex de out
-	 * @param {bool} Indica si l'element es pot clicar, per tant al passar per sobre s'escalen els elements i es canvia el punter 
-	 * @param {bool} Indica si l'element permet circular líquid en els dos sentits 
+	 * Generic raspbirra element Object (rb_element) for interactuating with kettles, coils, valves, pumps,...
+	 * @param {string} _id rb_element ID
+	 * @param {string} _name rb_element name
+	 * @param {number} _state Element state (0- Close / 1- Open)
+	 * @param {rb_coords} _coords Coords of the rb_element
+	 * @param {rb_coords} _coords_in Coords of the thread 'in' of the rb_element
+	 * @param {rb_coords} _coords_out Coords of the thread 'out' of the rb_element
+	 * @param {bool} bidirectional If True, permit liquid to flow in both directions of the element
+	 * @param {function} _ch_color_function Callback function that will be called for change the color of the rb_element
+	 * @param {function} _ch_text_function Callback function that will be called for change the text of the rb_element
 	 */
-	function rb_element(_id, _nom, _estat, _coords, _coords_in, _coords_out, _bidirectional, _ch_color_function, _ch_text_function)
+	function rb_element(_id, _name, _state, _coords, _coords_in, _coords_out, _bidirectional, _ch_color_function, _ch_text_function)
 	{
 		this.id = _id,
-		this.name = _nom;
+		this.name = _name;
 		this.coords = _coords;
 		this.in = _coords_in;
 		this.out = _coords_out;
@@ -458,11 +482,11 @@ function raspbirra(div_id, width, height)
 		this.bidirectional = _bidirectional
 		
 		this.liquid = 0;
-		this.stat = _estat; // Estat del objecte (encès/parat). Si no té estat o és indeterminat queda a -1.
+		this.state = _state; // Estat del objecte (encès/parat). Si no té estat o és indeterminat queda a -1.
 		
 		/**
-		 * Method for know the liquid stat of the both threads of the element (in/out)
-		 * @returns {array} array of the threads that have liquid
+		 * Method for knowing the liquid state of the both threads of the element (in/out)
+		 * @returns {array} Array of threads that contains liquid
 		 */
 		this.get_liquid_threads = function()
 		{
@@ -474,56 +498,56 @@ function raspbirra(div_id, width, height)
 			return arr_liquid_threads;
 		}
 		/**
-		 * Method for assign the in thread of the element
-		 * @param {rb_thread} thread Object that will be assigned to in of rb_element
+		 * Method that assigns the 'in' thread of the element
+		 * @param {rb_thread} rb_thread Thread object that will be assigned to 'in' of rb_element
 		 */
 		this.set_thread_in = function(rb_thread)
 		{
 			this.thread_in = rb_thread;
 		}
 		/**
-		 * Method for assign the out thread of the element
-		 * @param {rb_thread} thread Object that will be assigned to out of rb_element
+		 * Method that assigns the 'out' thread of the element
+		 * @param {rb_thread} rb_thread thread Object that will be assigned to 'out' of rb_element
 		 */
 		this.set_thread_out = function(rb_thread)
 		{
 			this.thread_out = rb_thread;
 		}
 		/**
-		 * Method for assign the color of the element
-		 * @param {string} color in html format (Ex: "red", "#000000", "#000", ...)
+		 * Method that assigns the color of the element
+		 * @param {string} color Color in html format (Ex: "red", "#000000", "#000", ...)
 		 */
 		this.set_color = function(color)
 		{
 			_ch_color_function(color);
 		}
 		/**
-		 * Method for assign the message text of the element
-		 * @param {string} contains the message text to show
+		 * Method that assigns the message text of the element
+		 * @param {string} text Contains the message text to show
 		 */
 		this.set_text = function(text) {
 			_ch_text_function(text);
 		};
 		/**
-		 * Method for assign the new liquid stat of the element
-		 * @param {number} with the new liquid stat (0- empty, 1- water, 2- worst)
-		 * @param {string} id of the element that assign the new liquid stat
+		 * Method that assigns the new liquid state of the element
+		 * @param {number} new_state Value of the new liquid state (0- empty, 1- water, 2- worst)
+		 * @param {string} id_origen Id of the element that assigns the new liquid state
 		 */
-		this.set_liquid = function(new_stat, id_origen)
+		this.set_liquid = function(new_state, id_origen)
 		{			
-			if (new_stat == this.liquid)
+			if (new_state == this.liquid)
 				return;
 			
-			console.log("rb_element::"+this.id+"::set_liquid::"+new_stat+"::Origen::"+id_origen);
+			console.log("rb_element::"+this.id+"::set_liquid::"+new_state+"::Origen::"+id_origen);
 			if (this.id.substring(0, 7)=="rb_pump" || this.id.substring(0, 7)=="rb_valv"){
-				if (this.stat == 0) 
+				if (this.state == 0) 
 					return;
 			} 
 			else if (this.id=="rb_kettle_0")
 			{
-				if (new_stat != 0)
+				if (new_state != 0)
 				{
-					this.liquid = new_stat;
+					this.liquid = new_state;
 					this.set_color(rb_hmi_liquid);				
 				}
 				else 
@@ -538,10 +562,10 @@ function raspbirra(div_id, width, height)
 			}
 			else if (this.id.substring(0, 9)=="rb_kettle" || this.id.substring(0, 13)=="rb_fermenter")
 			{
-				if (new_stat != 0)
+				if (new_state != 0)
 				{
 					this.liquid=2;
-					new_stat=2;
+					new_state=2;
 					this.set_color(rb_hmi_wort);
 				}
 				else 
@@ -556,31 +580,31 @@ function raspbirra(div_id, width, height)
 			}
 			else
 			{
-				this.liquid = new_stat;
+				this.liquid = new_state;
 			}
 			
 			if (id_origen == "rb_accio")
 				return;
 			
 			if (this.thread_out.hasOwnProperty('id') && this.thread_out.id != id_origen)
-				this.thread_out.set_liquid(new_stat, this.id);
+				this.thread_out.set_liquid(new_state, this.id);
 			
 			if (this.bidirectional==1 && this.thread_in.hasOwnProperty('id') && this.thread_in.id != id_origen)
-				this.thread_in.set_liquid(new_stat, this.id);
+				this.thread_in.set_liquid(new_state, this.id);
 		}
 		/**
-		 * Method for assign the new stat (open/close) of the element
-		 * @param {number} with the new liquid stat (0- close, 1- open)
-		 * @param {string} id of the element that assign the new liquid stat
+		 * Method that assigns the new state (open/close) of the element
+		 * @param {number} new_state Value of the new element state (0- close, 1- open)
+		 * @param {string} id_origen Id of the element that assigns the new liquid state
 		 */
-		this.set_stat = function(new_stat, id_origen)
+		this.set_state = function(new_state, id_origen)
 		{
-			console.log("rb_element::"+this.id+"::set_stat::"+new_stat);
-			this.stat = new_stat;
+			console.log("rb_element::"+this.id+"::set_state::"+new_state);
+			this.state = new_state;
 			
-			if (this.stat == 0)
+			if (this.state == 0)
 				this.set_color(rb_hmi_red);
-			else if (this.stat == 1)
+			else if (this.state == 1)
 				this.set_color(rb_hmi_green);
 			else 
 				this.set_color(rb_hmi_white);
@@ -593,9 +617,9 @@ function raspbirra(div_id, width, height)
 				// ULL!!! Les bidireccionals no s'han de limitar la out al tancar!
 				if(this.thread_out.hasOwnProperty('id') && this.thread_in.hasOwnProperty('id'))
 				{
-					if (new_stat==0)
+					if (new_state==0)
 					{
-						console.log("rb_elem::set_stat::new_stat==0");
+						console.log("rb_elem::set_state::new_state==0");
 						// Obtenir els elements de les dues sortides i treure el líquid de la no necessaria
 						var arr_elem_liquid = this.thread_out.get_liquid_elements();
 						var trobat = false;
@@ -660,7 +684,7 @@ function raspbirra(div_id, width, height)
 			{
 				if(this.thread_out.hasOwnProperty('id') && this.thread_in.hasOwnProperty('id'))
 				{
-					if (new_stat==0)
+					if (new_state==0)
 						this.thread_out.set_liquid(0);
 					else
 					{
@@ -672,23 +696,23 @@ function raspbirra(div_id, width, height)
 	}
 	
 	/**
-	 * Generic raspbirra element Object (rb_thread) for interactuate with the threads and tee
-	 * @param {string} Thread Id
-	 * @param {string} Thread Name
-	 * @param {array} Array of the rb_elements that will connect with this trhead
-	 * @param {array} Array that indicate if the element of this position will connect with in (0) or out (1)
-	 * @param {function} Function that will be called for change the color of the element
+	 * Generic raspbirra element object (rb_thread) that handles the threads and tees
+	 * @param {string} _id Thread Id
+	 * @param {string} _name Thread Name
+	 * @param {array} _arr_elements Array of the rb_elements that will connect with this thread
+	 * @param {array} _arr_connexions Array that indicates if the element of this position will connect with in (0) or out (1)
+	 * @param {function} _ch_color_function Function that will be called for change the color of the element
 	 */
-	function rb_thread(_id, _nom, _arr_elements, _arr_connexions, _ch_color_function)
+	function rb_thread(_id, _name, _arr_elements, _arr_connexions, _ch_color_function)
 	{
 		var funcio_color = _ch_color_function;
 		var arr_elements = _arr_elements;
 		var arr_connexions = _arr_connexions;
 		
 		this.id = _id;
-		this.name = _nom;
+		this.name = _name;
 		this.liquid = 0;
-		this.stat = -1; // Estat del objecte (encès/parat). Si no té estat o és indeterminat queda a -1.
+		this.state = -1; // Estat del objecte (encès/parat). Si no té estat o és indeterminat queda a -1.
 		
 		for (i =0;i < arr_elements.length;i++)
 		{
@@ -699,8 +723,8 @@ function raspbirra(div_id, width, height)
 		}
 		
 		/**
-		 * Method for know the liquid stat of the element connected with this thread
-		 * @returns {array} array of the elements (rb_element) that have liquid
+		 * Method for knowledge the liquid state of the element connected with this thread
+		 * @returns {array} Array of the elements (rb_element) that contains liquid
 		 */
 		this.get_liquid_elements = function()
 		{
@@ -713,22 +737,22 @@ function raspbirra(div_id, width, height)
 			return arr_elem_liquid;
 		}
 		/**
-		 * Method for assign the color of the thread
-		 * @param {string} color in html format (Ex: "red", "#000000", "#000", ...)
+		 * Method that assigns the color of the thread
+		 * @param {string} color Color in html format (Ex: "red", "#000000", "#000", ...)
 		 */
 		this.set_color = function(color)
 		{
 			funcio_color(color);
 		}
 		/**
-		 * Method for assign the new liquid stat of the element
-		 * @param {number} with the new liquid stat (0- empty, 1- water, 2- worst)
-		 * @param {string} id of the element that assign the new liquid stat
+		 * Method that assigns the new liquid state of the element
+		 * @param {number} new_state Value of the new liquid state (0- empty, 1- water, 2- worst)
+		 * @param {string} id_origen Id of the element that assigns the new liquid stat
 		 */
-		this.set_liquid = function(new_stat, id_origen)
+		this.set_liquid = function(new_state, id_origen)
 		{
-			console.log("rb_thread::"+this.id+"::set_liquid::"+new_stat+"::Origen::"+ id_origen);
-			this.liquid = new_stat;
+			console.log("rb_thread::"+this.id+"::set_liquid::"+new_state+"::Origen::"+ id_origen);
+			this.liquid = new_state;
 			if (this.liquid==1)
 				this.set_color(rb_hmi_liquid);
 			else if (this.liquid==2)
@@ -742,7 +766,7 @@ function raspbirra(div_id, width, height)
 			for (i =0;i<arr_elements.length;i++){
 				if (arr_elements[i].id!=id_origen){
 					console.log("rb_thread::" + this.id+"::set_liquid::Origen::" + id_origen + "::element_cridat_set_liquid::" +arr_elements[i].id)
-					arr_elements[i].set_liquid(new_stat, this.id);
+					arr_elements[i].set_liquid(new_state, this.id);
 				}
 				
 			}
@@ -750,9 +774,9 @@ function raspbirra(div_id, width, height)
 	}
 		
 	/**
-	 * Coords object
-	 * @param {float} X coord
-	 * @param {float} Y coord
+	 * Coords object (x,y)
+	 * @param {number} _x X coord
+	 * @param {number} _y Y coord
 	 */
 	function rb_coords(_x, _y)
 	{
@@ -760,8 +784,8 @@ function raspbirra(div_id, width, height)
 		this.y = _y;
 		
 		/**
-		 * Returns the coords in RaphaelJS format (comma separated. Ex: 12.3,5)
-		 * @returns {string} the coords in RaphaelJS format (comma separated. Ex: 12.3,5)
+		 * Returns the coords in RaphaelJS format (comma separated. Ex: "12.3,5")
+		 * @returns {string} the coords in RaphaelJS format (comma separated. Ex: "12.3,5")
 		 */
 		this.get_rs_coord = function() { return String(this.x) + "," + String(this.y);};
 	}
