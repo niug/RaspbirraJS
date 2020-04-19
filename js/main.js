@@ -53,15 +53,15 @@ function rb_liquid_inicial()
 	}
 }
 
-function rb_stat_inicial()
+function rb_state_inicial()
 {
 	for (var valvula_id in valvules)
 	{
-		valvules[valvula_id].set_stat(0, 'rb_accio');
+		valvules[valvula_id].set_state(0, 'rb_accio');
 	}
 	for (var bomba_id in bombes)
 	{
-		bombes[bomba_id].set_stat(0, 'rb_accio');
+		bombes[bomba_id].set_state(0, 'rb_accio');
 	}
 }
 
@@ -77,10 +77,10 @@ function rb_configurar_elements(rb_pas)
 		olles[2].set_liquid(0, 'rb_accio');
 	
 	for(var id_elem in json_config[rb_pas].valvules) {
-	   valvules[id_elem].set_stat(json_config[rb_pas].valvules[id_elem]);
+	   valvules[id_elem].set_state(json_config[rb_pas].valvules[id_elem]);
 	}
 	for(var id_elem in json_config[rb_pas].bombes) {
-	   bombes[id_elem].set_stat(json_config[rb_pas].bombes[id_elem]);
+	   bombes[id_elem].set_state(json_config[rb_pas].bombes[id_elem]);
 	}
 }
 
