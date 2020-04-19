@@ -15,7 +15,7 @@ Web application Visual Human-Machine Interface (HMI) for the raspbirra controlle
  
 #### Documentation
 
-[Documentation URL of RaspbirraJS](https://niug.github.io/RaspbirraJS/)
+[Documentation URL of RaspbirraJS](https://niug.github.io/RaspbirraJS/docs/)
  
 #### Url test 
 
